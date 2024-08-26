@@ -16,4 +16,6 @@ node* lastNode(node *list);
 
 node* append(int num, node *list, ...);
 
+int len(node *list);
+
 #endif /* UTILS_H */

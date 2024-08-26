@@ -97,5 +97,19 @@ node* append(int num, node *list, ...)
 }
 
 
+// returns length of list
+
+int len(node *list)
+{
+  node *ptr = list;
+  int count = 0;
+  
+  while (ptr != NULL)
+  {
+    count++;
+    ptr = ptr->next;
+  }
+  return count;
+}
 
 

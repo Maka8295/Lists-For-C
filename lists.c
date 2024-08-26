@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
+#include <string.h>
 
 // Reverse items in list and returns pointer to new list
 node* reverse(node* list)
@@ -90,7 +91,6 @@ node* append(int num, node *list, ...)
       node *last = lastNode(list);
       last->next = n;
     }
-
   }
   va_end(args);
   return list;
@@ -112,4 +112,41 @@ int len(node *list)
   return count;
 }
 
+
+// remove node from list that has str == input returns updated list
+// if not found it returns list unmodified
+
+node* strip(node *list, char *input)
+{
+  if (list == NULL)
+  {
+    return list;
+  }
+
+  // if head of list is match
+  if (strcmp(list->str, input) == 0)
+  {
+    node *tmp = list;
+    list = list->next;
+    free(tmp);
+    return list;
+  }
+
+  node *prev = list;
+  node *ptr = list->next;
+
+  while(ptr != NULL)
+  {
+    if (strcmp(ptr->str, input) == 0)
+    {
+      prev->next = ptr->next;
+      free(ptr);
+      return list;
+    }
+    prev = ptr;
+    ptr = ptr->next;
+  }
+
+  return list;
+}
 

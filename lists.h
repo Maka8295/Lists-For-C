@@ -18,4 +18,6 @@ node* append(int num, node *list, ...);
 
 int len(node *list);
 
+node* strip(node *list, char *input);
+
 #endif /* UTILS_H */

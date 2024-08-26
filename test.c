@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
+#include <string.h>
 
 int main(void)
 {
@@ -23,6 +24,9 @@ int main(void)
   printf("\n");
 
   printf("%i\n", len(list));
+
+  list = strip(list, "1");
+  printf("%s\n",lastNode(list)->str);
 
   // clean up
   while(list != NULL)

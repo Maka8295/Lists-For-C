@@ -20,4 +20,8 @@ int len(node *list);
 
 node* strip(node *list, char *input);
 
+node* sortLong(node* list);
+
+node* sortShort(node *list); 
+
 #endif /* UTILS_H */

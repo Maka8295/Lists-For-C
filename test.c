@@ -8,13 +8,10 @@
 int main(void)
 {
   node *list = NULL;
-  list = append(4, list, "1", "2", "3", "4");
-  printf("%s\n", indexVal(list, 2));
+  list = append(5, list, "1", "55555", "333", "4444", "22");
 
-  node *last = lastNode(list);
-  printf("%s\n", last->str);
+  list = sortShort(list);
   
-  list = reverse(list);
   node *ptr = list;
   while(ptr != NULL)
   {
@@ -23,16 +20,15 @@ int main(void)
   }
   printf("\n");
 
-  printf("%i\n", len(list));
 
-  list = strip(list, "1");
-  printf("%s\n",lastNode(list)->str);
+
 
   // clean up
   while(list != NULL)
   {
-    ptr = list;
+    node *ptr = list;
     list = list->next;
     free(ptr);
   }
+
 }

@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>
+#include <stdbool.h>
 
 // Reverse items in list and returns pointer to new list
 node* reverse(node* list)
@@ -150,3 +151,108 @@ node* strip(node *list, char *input)
   return list;
 }
 
+
+// sort list by longest to shortest BUBBLE SORT
+
+node* sortLong(node *list) 
+{  
+  if (list == NULL || list->next == NULL) 
+  {
+    return list; // List is empty or has only one element
+  }
+
+  bool swapped;
+  node *head = list;
+  node *end = NULL;
+
+  do 
+  {
+    swapped = false;
+    node *current = head;
+    node *prev = NULL;
+
+    while (current->next != end)
+    {
+      if (strlen(current->str) < strlen(current->next->str))
+      {
+        // Swap nodes
+        node *nextNode = current->next;
+        if (prev)
+        {
+          prev->next = nextNode;
+        } 
+        else
+        {
+          head = nextNode;
+        }
+        current->next = nextNode->next;
+        nextNode->next = current;
+
+        swapped = true;
+        prev = nextNode;
+      } 
+      else 
+      {
+        prev = current;
+        current = current->next;
+      }
+    }
+    end = current; // Update end to the last unsorted element
+    
+  } while (swapped);
+
+    return head;
+}
+
+
+// sort list by shortest to longest BUBBLE SORT
+
+node* sortShort(node *list) 
+{  
+  if (list == NULL || list->next == NULL) 
+  {
+    return list; // List is empty or has only one element
+  }
+
+  bool swapped;
+  node *head = list;
+  node *end = NULL;
+
+  do 
+  {
+    swapped = false;
+    node *current = head;
+    node *prev = NULL;
+
+    while (current->next != end)
+    {
+      if (strlen(current->str) > strlen(current->next->str))
+      {
+        // Swap nodes
+        node *nextNode = current->next;
+        if (prev)
+        {
+          prev->next = nextNode;
+        } 
+        else
+        {
+          head = nextNode;
+        }
+        current->next = nextNode->next;
+        nextNode->next = current;
+
+        swapped = true;
+        prev = nextNode;
+      } 
+      else 
+      {
+        prev = current;
+        current = current->next;
+      }
+    }
+    end = current; // Update end to the last unsorted element
+    
+  } while (swapped);
+
+    return head;
+}

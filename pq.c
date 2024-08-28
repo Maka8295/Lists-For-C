@@ -1,70 +1,72 @@
-// Thank you to Blaz on stackexchange!
-
-#include "pq.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdarg.h>
-#include <string.h>
-#include <stdbool.h>
+#include "pq.h"
 
-void swap(pair queue[], size_t i, size_t j)
-{
-    pair temp = queue[i];
-    queue[i] = queue[j];
-    queue[j] = temp;
+
+
+// Define swap function to swap two nodes
+void swap(node* pq[], int i, int j) {
+    node* temp = pq[i];
+    pq[i] = pq[j];
+    pq[j] = temp;
 }
 
-
-node* dequeue(pair queue[], size_t size)
-{
-    node *root = queue[0].node;
-    queue[0] = queue[--size];
-
-    // Loop while at least one child exists
-    for (size_t curr = 0; 2 * curr + 1 < size;)
-    {
-        size_t min_cost = 1;
-        if (2 * curr + 2 < size &&
-            queue[2 * curr + 2].priority < queue[2 * curr + 1].priority) {
-            min_cost = 2;
-        }
-
-        if (queue[curr].priority <= queue[2 * curr + min_cost].priority) {
-            break;
-        }
-
-        swap(queue, curr, 2 * curr + min_cost);
-        curr = 2 * curr + min_cost;
-    }
-
-    return root;
-}
-
-void bubble_up(pair queue[], size_t curr)
-{
-    while (curr > 0) 
-    {
-        size_t parent = (curr - 1) / 2;
-        if (queue[parent].priority <= queue[curr].priority) {
-            break;
-        }
-        swap(queue, parent, curr);
-        curr = parent;
+// Define heapifyUp function to maintain heap property during insertion
+void heapifyUp(PriorityQueue* pq, int index) {
+    if (index && pq->items[(index - 1) / 2]->priority > pq->items[index]->priority) {
+        swap(pq->items, (index - 1) / 2, index);
+        heapifyUp(pq, (index - 1) / 2);
     }
 }
 
-void enqueue(pair queue[], node *node, size_t priority, size_t size)
-{
-    queue[size] = (pair){node, priority};
-    bubble_up(queue, size);
+// Define enqueue function to add a node to the queue
+void enqueue(PriorityQueue* pq, node* n) {
+    if (pq->size == MAX) {
+        printf("Priority queue is full\n");
+        return;
+    }
+
+    pq->items[pq->size++] = n;
+    heapifyUp(pq, pq->size - 1);
 }
 
-void decrease_key(pair queue[], node *node, size_t priority, size_t size)
-{
-    size_t curr = 0;
-    for (; curr < size && queue[curr].node != node; ++curr);
-    queue[curr].priority = priority;
-    bubble_up(queue, curr);
+// Define heapifyDown function to maintain heap property during deletion
+void heapifyDown(PriorityQueue* pq, int index) {
+    int smallest = index;
+    int left = 2 * index + 1;
+    int right = 2 * index + 2;
+
+    if (left < pq->size && pq->items[left]->priority < pq->items[smallest]->priority)
+        smallest = left;
+
+    if (right < pq->size && pq->items[right]->priority < pq->items[smallest]->priority)
+        smallest = right;
+
+    if (smallest != index) {
+        swap(pq->items, index, smallest);
+        heapifyDown(pq, smallest);
+    }
 }
 
+// Define dequeue function to remove the node with the highest priority
+node* dequeue(PriorityQueue* pq) {
+    if (!pq->size) {
+        printf("Priority queue is empty\n");
+        return NULL;
+    }
+
+    node* item = pq->items[0];
+    pq->items[0] = pq->items[--pq->size];
+    heapifyDown(pq, 0);
+    return item;
+}
+
+// Define peek function to get the node with the highest priority
+node* peek(PriorityQueue* pq) {
+    if (!pq->size) {
+        printf("Priority queue is empty\n");
+        return NULL;
+    }
+    return pq->items[0];
+}
 
